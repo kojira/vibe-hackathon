@@ -1,0 +1,44 @@
+# Dependencies
+node_modules/
+
+# Build outputs
+dist/
+*.js.map
+*.d.ts.map
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# Database files
+*.db
+*.db-journal
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Test coverage
+coverage/
+
+# Cloudflare
+.wrangler/
+.dev.vars
+
+# Temporary files
+*.tmp
+*.temp

@@ -1,0 +1,7 @@
+tunnel: eeb11d96-83d1-4357-8450-8e457c5383c5
+credentials-file: /Users/kojira/.cloudflared/eeb11d96-83d1-4357-8450-8e457c5383c5.json
+
+ingress:
+  - hostname: vibes.kojira.io
+    service: http://localhost:4000
+  - service: http_status:404
