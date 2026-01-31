@@ -10,4 +10,4 @@ compatibility_date = "2024-09-25"
 
 [vars]
 # 本番用フロントエンドURL（GitHub Pages）
-FRONTEND_URL = "https://kojira.github.io/vibe-theme-generator"
+FRONTEND_URL = "https://kojira.github.io/vibe-hackathon"
