@@ -15,23 +15,34 @@ jobs:
   deploy-workers:
     name: Deploy Cloudflare Workers
     runs-on: ubuntu-latest
-    # Secretが設定されていない場合はスキップ
-    if: ${{ secrets.CLOUDFLARE_API_TOKEN != '' }}
     continue-on-error: true
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Check if API token exists
+        id: check-token
+        run: |
+          if [ -z "${{ secrets.CLOUDFLARE_API_TOKEN }}" ]; then
+            echo "skip=true" >> $GITHUB_OUTPUT
+            echo "Cloudflare API token not configured, skipping Workers deploy"
+          else
+            echo "skip=false" >> $GITHUB_OUTPUT
+          fi
+
       - name: Setup Node.js
+        if: steps.check-token.outputs.skip != 'true'
         uses: actions/setup-node@v4
         with:
           node-version: '20'
 
       - name: Install dependencies
+        if: steps.check-token.outputs.skip != 'true'
         working-directory: ./workers
         run: npm install
 
       - name: Deploy to Cloudflare Workers
+        if: steps.check-token.outputs.skip != 'true'
         uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
@@ -40,7 +51,6 @@ jobs:
   deploy-frontend:
     name: Deploy Frontend to GitHub Pages
     runs-on: ubuntu-latest
-    # Workersデプロイに依存しない
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -63,7 +73,7 @@ jobs:
         working-directory: ./frontend
         run: pnpm build
         env:
-          VITE_WORKERS_URL: ${{ secrets.WORKERS_URL || '' }}
+          VITE_WORKERS_URL: ${{ secrets.WORKERS_URL }}
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
